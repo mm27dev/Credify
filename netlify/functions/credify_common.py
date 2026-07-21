@@ -5,11 +5,16 @@ from here — Netlify bundles the whole netlify/functions/ directory together
 for Python, so sibling imports like `from credify_common import ...` work.
 
 API keys: set these as real Environment Variables in the Netlify dashboard
-(Site configuration -> Environment variables) named exactly OPENAI_API_KEY,
+(Site configuration -> Environment variables) named exactly GROQ_API_KEY,
 ANTHROPIC_API_KEY, GEMINI_API_KEY. Nothing to install or configure locally —
 Netlify injects them into the function at request time. The placeholder
 strings below are only a fallback so the functions don't crash if a key
 hasn't been added yet; they'll just return a clear per-model error instead.
+
+The "ChatGPT" slot is actually served by Groq's free-tier gpt-oss-120b model
+via Groq's OpenAI-compatible endpoint (still uses the `openai` SDK, just
+pointed at a different base_url) — the frontend/UI label wasn't changed, only
+which model answers.
 """
 
 import difflib
@@ -19,13 +24,17 @@ import re
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from urllib.parse import urlsplit
 
-OPENAI_API_KEY = os.environ.get("OPENAI_API_KEY", "YOUR_OPENAI_API_KEY_HERE")
+GROQ_API_KEY = os.environ.get("GROQ_API_KEY", "YOUR_GROQ_API_KEY_HERE")
 ANTHROPIC_API_KEY = os.environ.get("ANTHROPIC_API_KEY", "YOUR_ANTHROPIC_API_KEY_HERE")
 GEMINI_API_KEY = os.environ.get("GEMINI_API_KEY", "YOUR_GEMINI_API_KEY_HERE")
 
-OPENAI_MODEL, OPENAI_MODEL_DEEP = "gpt-4o-mini", "gpt-4o"
+GROQ_BASE_URL = "https://api.groq.com/openai/v1"
+GROQ_MODEL = "openai/gpt-oss-120b"  # only free model in play, used for both normal and deep checks
+
 CLAUDE_MODEL, CLAUDE_MODEL_DEEP = "claude-3-5-haiku-latest", "claude-3-5-sonnet-latest"
-GEMINI_MODEL, GEMINI_MODEL_DEEP = "gemini-1.5-flash", "gemini-1.5-pro"
+# gemini-1.5-* were shut down in 2025/26 (404 on every call) — these are the
+# current stable IDs. Update here if Google retires these too.
+GEMINI_MODEL, GEMINI_MODEL_DEEP = "gemini-2.5-flash", "gemini-2.5-pro"
 
 REQUEST_TIMEOUT = 25
 LINK_FETCH_TIMEOUT = 8
@@ -75,12 +84,12 @@ def call_claude(prompt, deep=False):
 
 
 def call_chatgpt(prompt, deep=False):
-    if _placeholder(OPENAI_API_KEY):
-        raise RuntimeError("ChatGPT API key not set — add OPENAI_API_KEY in Netlify's Environment variables.")
+    if _placeholder(GROQ_API_KEY):
+        raise RuntimeError("Groq API key not set — add GROQ_API_KEY in Netlify's Environment variables.")
     from openai import OpenAI
-    client = OpenAI(api_key=OPENAI_API_KEY, timeout=REQUEST_TIMEOUT)
+    client = OpenAI(api_key=GROQ_API_KEY, base_url=GROQ_BASE_URL, timeout=REQUEST_TIMEOUT)
     resp = client.chat.completions.create(
-        model=OPENAI_MODEL_DEEP if deep else OPENAI_MODEL,
+        model=GROQ_MODEL,
         messages=[{"role": "user", "content": prompt}],
         max_tokens=700,
     )
