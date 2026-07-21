@@ -1,0 +1,1252 @@
+<!DOCTYPE html>
+<!-- saved from url=(0033)https://concur-check.netlify.app/ -->
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#3d5ae8">
+<link rel="manifest" href="https://concur-check.netlify.app/manifest.webmanifest">
+<link rel="icon" href="https://concur-check.netlify.app/icons/icon-192.png" type="image/png">
+<link rel="apple-touch-icon" href="https://concur-check.netlify.app/icons/icon-180.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="Credify">
+<title>Credify</title>
+</head>
+<body>
+<title>Credify</title>
+<style>
+  :root {
+    --page: #f4f6fc;
+    --card: #ffffff;
+    --ink: #182757;
+    --body: #475677;
+    --muted: #7a87a6;
+    --navy: #3d5ae8;
+    --navy-hover: #2f49cc;
+    --navy-ink: #ffffff;
+    --navy-soft: #e9edfd;
+    --hairline: #e3e8f6;
+    --dashed: #c7d1ec;
+    --shadow: rgba(35, 58, 180, 0.10);
+    --good: #1d8a54;
+    --warn: #b07d14;
+    --bad: #c04545;
+    --good-soft: #e4f4ec;
+    --warn-soft: #faf1dc;
+    --bad-soft: #fbe9e9;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --page: #0b1226;
+      --card: #141e3a;
+      --ink: #eaeffc;
+      --body: #b9c4de;
+      --muted: #8291b4;
+      --navy: #8fa5f5;
+      --navy-hover: #a5b6f7;
+      --navy-ink: #0b1226;
+      --navy-soft: #1c2649;
+      --hairline: #243158;
+      --dashed: #364573;
+      --shadow: rgba(0, 0, 0, 0.45);
+      --good: #4fc98b;
+      --warn: #d9a83f;
+      --bad: #e07a7a;
+      --good-soft: #14301f;
+      --warn-soft: #33290f;
+      --bad-soft: #351a1a;
+    }
+  }
+  :root[data-theme="light"] {
+    --page: #f4f6fc;
+    --card: #ffffff;
+    --ink: #182757;
+    --body: #475677;
+    --muted: #7a87a6;
+    --navy: #3d5ae8;
+    --navy-hover: #2f49cc;
+    --navy-ink: #ffffff;
+    --navy-soft: #e9edfd;
+    --hairline: #e3e8f6;
+    --dashed: #c7d1ec;
+    --shadow: rgba(35, 58, 180, 0.10);
+    --good: #1d8a54;
+    --warn: #b07d14;
+    --bad: #c04545;
+    --good-soft: #e4f4ec;
+    --warn-soft: #faf1dc;
+    --bad-soft: #fbe9e9;
+  }
+  :root[data-theme="dark"] {
+    --page: #0b1226;
+    --card: #141e3a;
+    --ink: #eaeffc;
+    --body: #b9c4de;
+    --muted: #8291b4;
+    --navy: #8fa5f5;
+    --navy-hover: #a5b6f7;
+    --navy-ink: #0b1226;
+    --navy-soft: #1c2649;
+    --hairline: #243158;
+    --dashed: #364573;
+    --shadow: rgba(0, 0, 0, 0.45);
+    --good: #4fc98b;
+    --warn: #d9a83f;
+    --bad: #e07a7a;
+    --good-soft: #14301f;
+    --warn-soft: #33290f;
+    --bad-soft: #351a1a;
+  }
+
+  * { box-sizing: border-box; }
+  html, body { height: 100%; }
+  body {
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    background: var(--page);
+    color: var(--body);
+  }
+  .serif { font-family: "New York", Georgia, "Times New Roman", serif; }
+  button { font: inherit; cursor: pointer; }
+
+  .app { display: flex; height: 100vh; height: 100dvh; }
+
+  /* ---------- Sidebar ---------- */
+  .sidebar {
+    width: 216px;
+    flex-shrink: 0;
+    background: var(--card);
+    border-right: 1px solid var(--hairline);
+    display: flex;
+    flex-direction: column;
+    padding: 24px 14px;
+    gap: 22px;
+    overflow-y: auto;
+  }
+  .wordmark {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    padding: 0 10px;
+    font-family: "New York", Georgia, "Times New Roman", serif;
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: var(--ink);
+  }
+  .wordmark .mark {
+    width: 22px;
+    height: 24px;
+    background: none;
+    color: var(--navy-ink);
+    display: grid;
+    place-items: center;
+    flex-shrink: 0;
+  }
+  .wordmark .mark svg { display: block; }
+  .nav { display: flex; flex-direction: column; gap: 3px; }
+  .nav button {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+    padding: 9px 10px;
+    border: none;
+    border-radius: 999px;
+    background: transparent;
+    font-size: 0.88rem;
+    color: var(--muted);
+    text-align: left;
+  }
+  .nav button svg { flex-shrink: 0; opacity: 0.8; }
+  .nav button:hover { color: var(--ink); background: var(--page); }
+  .nav button.active {
+    color: var(--navy-ink);
+    background: var(--navy);
+    font-weight: 600;
+  }
+  .nav .soon {
+    margin-left: auto;
+    font-size: 0.6rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--muted);
+    background: var(--page);
+    border: 1px solid var(--hairline);
+    border-radius: 999px;
+    padding: 2px 7px;
+  }
+  .side-label {
+    font-size: 0.66rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin: 4px 0 6px 10px;
+  }
+  .history-list { display: flex; flex-direction: column; gap: 2px; }
+  .history-list button {
+    display: block;
+    width: 100%;
+    padding: 7px 10px;
+    border: none;
+    border-radius: 8px;
+    background: transparent;
+    font-size: 0.8rem;
+    color: var(--muted);
+    text-align: left;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .history-list button:hover { color: var(--ink); background: var(--page); }
+  .history-empty {
+    font-size: 0.76rem;
+    color: var(--muted);
+    padding: 4px 10px;
+    border: 1px dashed var(--dashed);
+    border-radius: 8px;
+    margin: 0 2px;
+    line-height: 1.5;
+  }
+  .side-foot {
+    margin-top: auto;
+    padding: 12px 10px 0;
+    border-top: 1px solid var(--hairline);
+    font-size: 0.73rem;
+    line-height: 1.55;
+    color: var(--muted);
+  }
+
+  /* ---------- Main ---------- */
+  .main { flex: 1; display: flex; flex-direction: column; min-width: 0; }
+  .view { display: none; }
+  .view.on { display: flex; }
+
+  /* Hero */
+  .hero {
+    flex: 1;
+    overflow-y: auto;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 32px 24px;
+    text-align: center;
+  }
+  .kicker {
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--navy);
+    margin: 0 0 14px;
+  }
+  .hero h1 {
+    font-family: "New York", Georgia, "Times New Roman", serif;
+    font-size: clamp(2.1rem, 5.2vw, 3.3rem);
+    font-weight: 700;
+    line-height: 1.08;
+    color: var(--ink);
+    margin: 0 0 30px;
+    text-wrap: balance;
+  }
+
+  .chatcard {
+    width: 100%;
+    max-width: 660px;
+    background: var(--card);
+    border: 1px solid var(--hairline);
+    border-radius: 22px;
+    box-shadow: 0 20px 50px -20px var(--shadow), 0 2px 10px -4px var(--shadow);
+    padding: 12px;
+    text-align: left;
+  }
+  .chatcard:focus-within { border-color: color-mix(in srgb, var(--navy) 50%, var(--hairline)); }
+  .mode-tabs { display: flex; gap: 4px; padding: 2px 4px 8px; }
+  .mode-tabs button {
+    border: none;
+    background: transparent;
+    color: var(--muted);
+    font-size: 0.78rem;
+    font-weight: 600;
+    border-radius: 999px;
+    padding: 6px 13px;
+  }
+  .mode-tabs button.on { background: var(--navy-soft); color: var(--navy); }
+  .chatcard textarea {
+    display: block;
+    width: 100%;
+    border: none;
+    outline: none;
+    resize: none;
+    background: transparent;
+    font: inherit;
+    font-size: 1rem;
+    line-height: 1.55;
+    color: var(--ink);
+    padding: 4px 10px 6px;
+    min-height: 56px;
+  }
+  .chatcard textarea::placeholder { color: var(--muted); }
+  .chatcard .row { display: flex; align-items: center; gap: 10px; padding: 6px 4px 2px 10px; }
+  .models { display: flex; align-items: center; gap: 12px; font-size: 0.76rem; font-weight: 600; color: var(--muted); flex-wrap: wrap; }
+  .models span { display: flex; align-items: center; gap: 5px; }
+  .dot { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; }
+  .dot.claude { background: #cc6a33; }
+  .dot.chatgpt { background: #10a37f; }
+  .dot.gemini { background: #4285f4; }
+  .check-btn {
+    margin-left: auto;
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    border: none;
+    background: var(--navy);
+    color: var(--navy-ink);
+    font-size: 0.9rem;
+    font-weight: 600;
+    border-radius: 999px;
+    padding: 11px 22px;
+    flex-shrink: 0;
+  }
+  .check-btn:hover { background: var(--navy-hover); }
+  button:focus-visible { outline: 2px solid var(--navy); outline-offset: 2px; }
+  .row .check-btn { margin-left: 0; }
+  .deep-toggle {
+    margin-left: auto;
+    border: 1px solid var(--hairline);
+    background: var(--card);
+    color: var(--muted);
+    font-size: 0.76rem;
+    font-weight: 700;
+    border-radius: 999px;
+    padding: 7px 13px;
+    flex-shrink: 0;
+  }
+  .deep-toggle:hover { border-color: var(--navy); color: var(--navy); }
+  .deep-toggle.on { background: var(--navy); border-color: var(--navy); color: var(--navy-ink); }
+  .check-chip {
+    align-self: flex-start;
+    font-size: 0.66rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--navy);
+    background: var(--navy-soft);
+    border: 1px solid color-mix(in srgb, var(--navy) 30%, var(--hairline));
+    border-radius: 999px;
+    padding: 3px 10px;
+    margin-bottom: -4px;
+  }
+  .classcode {
+    font-family: "New York", Georgia, "Times New Roman", serif;
+    font-size: 2.4rem;
+    font-weight: 700;
+    letter-spacing: 0.3em;
+    color: var(--navy);
+    margin: 6px 0 2px;
+  }
+  .toast {
+    position: fixed;
+    left: 50%;
+    bottom: 26px;
+    transform: translateX(-50%) translateY(10px);
+    background: var(--navy);
+    color: var(--navy-ink);
+    font-size: 0.84rem;
+    font-weight: 600;
+    border-radius: 999px;
+    padding: 11px 20px;
+    box-shadow: 0 12px 30px -10px var(--shadow);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.25s ease, transform 0.25s ease;
+    z-index: 99;
+    max-width: 90vw;
+    text-align: center;
+  }
+  .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+  .hero .desc {
+    font-size: 0.92rem;
+    line-height: 1.6;
+    color: var(--muted);
+    max-width: 54ch;
+    margin: 22px 0 0;
+  }
+  .examples { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; margin-top: 24px; }
+  .examples button {
+    font-size: 0.82rem;
+    color: var(--body);
+    background: var(--card);
+    border: 1px dashed var(--dashed);
+    border-radius: 999px;
+    padding: 8px 15px;
+  }
+  .examples button:hover { border-style: solid; border-color: var(--navy); color: var(--navy); }
+
+  /* Thread */
+  .thread { flex: 1; overflow-y: auto; padding: 0 28px; flex-direction: column; }
+  .thread-inner {
+    max-width: 720px;
+    width: 100%;
+    margin: 0 auto;
+    padding: 36px 0 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 34px;
+  }
+  .dock { display: none; padding: 8px 28px 20px; }
+  .app.chatting .dock { display: block; }
+  .dock .chatcard { max-width: 720px; margin: 0 auto; padding: 8px; border-radius: 18px; }
+  .dock .chatcard textarea { min-height: 0; height: 42px; padding: 8px 12px 0; }
+  .dock .mode-tabs { padding: 2px 4px 4px; }
+  .dock-hint { max-width: 720px; margin: 8px auto 0; text-align: center; font-size: 0.71rem; color: var(--muted); }
+
+  .check { display: flex; flex-direction: column; gap: 14px; }
+  .asked {
+    font-family: "New York", Georgia, "Times New Roman", serif;
+    font-size: 1.45rem;
+    font-weight: 700;
+    color: var(--ink);
+    line-height: 1.25;
+    margin: 0;
+    text-wrap: balance;
+  }
+
+  /* Agreement score */
+  .scorebar {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    background: var(--card);
+    border: 1px solid var(--hairline);
+    border-radius: 14px;
+    padding: 12px 16px;
+  }
+  .score-label { font-size: 0.72rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); white-space: nowrap; }
+  .meter { flex: 1; height: 8px; border-radius: 999px; background: var(--page); overflow: hidden; }
+  .meter i { display: block; height: 100%; border-radius: 999px; transition: width 0.7s ease, background 0.7s ease; }
+  .score-delta { font-size: 0.7rem; font-weight: 700; border-radius: 999px; padding: 3px 9px; white-space: nowrap; }
+  .score-delta.up { background: var(--good-soft); color: var(--good); }
+  .score-delta.down { background: var(--bad-soft); color: var(--bad); }
+  .score-num { font-size: 0.95rem; font-weight: 700; font-variant-numeric: tabular-nums; white-space: nowrap; }
+  .score-word { font-size: 0.78rem; font-weight: 600; white-space: nowrap; }
+
+  /* Bottom line */
+  .bottomline {
+    background: var(--navy-soft);
+    border: 1px solid color-mix(in srgb, var(--navy) 30%, var(--hairline));
+    border-radius: 14px;
+    padding: 14px 18px;
+  }
+  .bottomline .who { font-size: 0.72rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--navy); margin-bottom: 5px; }
+  .bottomline p { margin: 0; font-size: 0.96rem; line-height: 1.6; color: var(--ink); }
+
+  /* Answers */
+  .answers {
+    background: var(--card);
+    border: 1px solid var(--hairline);
+    border-radius: 16px;
+    box-shadow: 0 10px 30px -18px var(--shadow);
+    overflow: hidden;
+  }
+  .answer { display: grid; grid-template-columns: 112px 1fr; gap: 16px; padding: 16px 18px; }
+  .answer + .answer { border-top: 1px solid var(--hairline); }
+  .answer .who { display: flex; align-items: flex-start; gap: 8px; font-size: 0.82rem; font-weight: 700; color: var(--ink); padding-top: 1px; }
+  .answer .who .dot { margin-top: 5px; }
+  .answer .what { font-size: 0.9rem; line-height: 1.65; color: var(--body); margin: 0; }
+  .answer .what.pending { color: var(--muted); }
+  mark.agree { background: var(--good-soft); color: inherit; border-radius: 3px; padding: 0 2px; }
+  mark.conflict { background: var(--warn-soft); color: inherit; border-radius: 3px; padding: 0 2px; box-shadow: inset 0 -2px 0 var(--warn); }
+  .badges { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
+  .badge {
+    font-size: 0.66rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    border-radius: 999px;
+    padding: 3px 9px;
+  }
+  .badge.true { background: var(--good-soft); color: var(--good); }
+  .badge.disputed { background: var(--warn-soft); color: var(--warn); }
+  .badge.unverifiable { background: var(--bad-soft); color: var(--bad); }
+
+  /* Sources */
+  .sources {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.78rem;
+    color: var(--muted);
+  }
+  .sources .who { font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; font-size: 0.68rem; }
+  .sources a {
+    color: var(--navy);
+    text-decoration: none;
+    border: 1px solid var(--hairline);
+    background: var(--card);
+    border-radius: 999px;
+    padding: 4px 11px;
+    font-weight: 600;
+  }
+  .sources a:hover { border-color: var(--navy); }
+
+  /* Actions */
+  .actions { display: flex; flex-wrap: wrap; gap: 8px; }
+  .actions button {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--navy);
+    background: var(--card);
+    border: 1px solid var(--hairline);
+    border-radius: 999px;
+    padding: 7px 14px;
+  }
+  .actions button:hover { border-color: var(--navy); }
+  .crosscheck-note {
+    font-size: 0.82rem;
+    line-height: 1.55;
+    color: var(--body);
+    background: var(--card);
+    border: 1px dashed var(--dashed);
+    border-radius: 12px;
+    padding: 10px 14px;
+  }
+  .crosscheck-note b { color: var(--navy); }
+
+  /* Class mode view */
+  .classview { flex: 1; overflow-y: auto; flex-direction: column; align-items: center; padding: 48px 24px; }
+  .classcard { width: 100%; max-width: 620px; display: flex; flex-direction: column; gap: 16px; }
+  .classcard h2 {
+    font-family: "New York", Georgia, "Times New Roman", serif;
+    font-size: 1.9rem;
+    color: var(--ink);
+    margin: 0;
+  }
+  .classcard > p { margin: 0; font-size: 0.92rem; line-height: 1.6; color: var(--muted); }
+  .classform {
+    background: var(--card);
+    border: 1px solid var(--hairline);
+    border-radius: 18px;
+    box-shadow: 0 14px 40px -18px var(--shadow);
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .classform label { font-size: 0.72rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); }
+  .classform input {
+    border: 1px solid var(--hairline);
+    border-radius: 10px;
+    background: var(--page);
+    font: inherit;
+    font-size: 0.95rem;
+    color: var(--ink);
+    padding: 10px 12px;
+    outline: none;
+  }
+  .classform input:focus { border-color: var(--navy); }
+  .classform .check-btn { margin-left: 0; align-self: flex-start; }
+  .posted {
+    border: 1px solid color-mix(in srgb, var(--navy) 30%, var(--hairline));
+    background: var(--navy-soft);
+    border-radius: 12px;
+    padding: 12px 14px;
+    font-size: 0.88rem;
+    color: var(--ink);
+    line-height: 1.55;
+  }
+  .demo-tag {
+    align-self: flex-start;
+    font-size: 0.66rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--muted);
+    border: 1px solid var(--hairline);
+    background: var(--card);
+    border-radius: 999px;
+    padding: 3px 9px;
+  }
+
+  @media (max-width: 680px) {
+    .app { flex-direction: column; }
+    .sidebar { width: 100%; flex-direction: row; align-items: center; gap: 10px; padding: 10px 14px; border-right: none; border-bottom: 1px solid var(--hairline); overflow-x: auto; overflow-y: hidden; }
+    .nav { flex-direction: row; gap: 4px; }
+    .nav button { white-space: nowrap; padding: 7px 12px; }
+    .nav .soon, .side-label, .history-list, .history-empty, .side-foot { display: none; }
+    .answer { grid-template-columns: 1fr; gap: 6px; }
+    .thread { padding: 0 18px; }
+    .dock { padding: 8px 18px 16px; }
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .check { animation: rise 0.35s ease both; }
+    @keyframes rise { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+  }
+</style>
+
+<div class="app" id="app">
+  <aside class="sidebar">
+    <div class="wordmark">
+      <span class="mark" aria-hidden="true">
+        <svg width="22" height="24" viewBox="0 0 100 110" fill="none">
+          <path d="M50 4 L92 22 V48 C92 76 74 96 50 106 C26 96 8 76 8 48 V22 Z" fill="#3d5ae8"></path>
+          <path d="M32 56 L45 69 L70 41" stroke="#fff" stroke-width="11" stroke-linecap="round" stroke-linejoin="round"></path>
+        </svg>
+      </span>
+      Credify
+    </div>
+
+    <nav class="nav" aria-label="Main">
+      <button type="button" id="navCheck" class="active" fdprocessedid="fx895h">
+        <svg width="15" height="15" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M8 3v10M3 8h10"></path></svg>
+        New check
+      </button>
+      <button type="button" id="navClass" fdprocessedid="4s8fjs">
+        <svg width="15" height="15" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M2 5l6-2.5L14 5 8 7.5 2 5z"></path><path d="M4.5 6.5v4c0 .8 1.6 1.7 3.5 1.7s3.5-.9 3.5-1.7v-4"></path></svg>
+        Class mode
+      </button>
+      <button type="button" disabled="" style="opacity:.6; cursor:default;">
+        <svg width="15" height="15" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><circle cx="8" cy="8" r="2.2"></circle><path d="M8 1.8v2M8 12.2v2M1.8 8h2M12.2 8h2M3.6 3.6l1.4 1.4M11 11l1.4 1.4M12.4 3.6L11 5M5 11l-1.4 1.4"></path></svg>
+        Settings <span class="soon">Soon</span>
+      </button>
+    </nav>
+
+    <div>
+      <p class="side-label">History</p>
+      <div class="history-list" id="historyList"><button type="button" title="What caused the fall of the Roman Empire?" fdprocessedid="b9i93a">What caused the fall of the Roman Empire?</button><button type="button" title="Did Elon musk go to the moon?" fdprocessedid="k7ez9c">Did Elon musk go to the moon?</button></div>
+    </div>
+
+    <p class="side-foot">
+      Don't just trust AI. Verify it.
+    </p>
+  </aside>
+
+  <main class="main">
+    <!-- View: hero -->
+    <div class="hero view on" id="hero">
+      <p class="kicker">Compare AI answers</p>
+      <h1>Know what to trust.</h1>
+
+      <form class="chatcard" id="askForm">
+        <div class="mode-tabs" role="tablist" aria-label="Check type">
+          <button type="button" class="on" data-mode="ask" fdprocessedid="an7wq">Ask a question</button>
+          <button type="button" data-mode="paste" fdprocessedid="0lxtb">Check a text</button>
+          <button type="button" data-mode="link" fdprocessedid="nbisvf">Check a link</button>
+        </div>
+        <textarea id="askInput" rows="2" placeholder="Ask anything — Credify puts it to every AI at once…" aria-label="Your question"></textarea>
+        <div class="row">
+          <div class="models" aria-label="Models checked">
+            <span><i class="dot claude"></i>Claude</span>
+            <span><i class="dot chatgpt"></i>ChatGPT</span>
+            <span><i class="dot gemini"></i>Gemini</span>
+          </div>
+          <button type="button" id="deepBtn" class="deep-toggle" title="Use the most capable models — better on hard questions, costs a bit more" fdprocessedid="p58f5p">🧠 Deep</button>
+          <button type="submit" class="check-btn" fdprocessedid="rjtsqp">
+            Check it
+            <svg width="13" height="13" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 7h10M8 3l4 4-4 4"></path></svg>
+          </button>
+        </div>
+      </form>
+
+      <p class="desc">
+        Different AIs give different answers. Credify asks three models the same
+        question, scores how much they agree, highlights where they conflict,
+        and backs the answer with real sources.
+      </p>
+
+      <div class="examples" id="examples">
+        <button type="button" fdprocessedid="lrj9fh">What causes the seasons?</button>
+        <button type="button" fdprocessedid="j2ehxb">Is a tomato a fruit or a vegetable?</button>
+        <button type="button" fdprocessedid="6xcs9">Who invented the telephone?</button>
+      </div>
+    </div>
+
+    <!-- View: thread -->
+    <div class="thread view" id="thread">
+      <div class="thread-inner" id="threadInner"></div>
+    </div>
+    <div class="dock" id="dock">
+      <p class="dock-hint">The three example questions are instant demos — everything else asks the live models. Shared demo budget: $1 every 3 days.</p>
+    </div>
+
+    <!-- View: class mode -->
+    <div class="classview view" id="classview">
+      <div class="classcard">
+        <h2>Verified citations</h2>
+        <p>
+          Every check can become a citation you can show your work with. Check
+          a question, get a 4-letter code, and anyone — a teacher, a study
+          group, a whole class — opens the exact same cross-checked result:
+          same answers, same agreement score. AI research, out in the open.
+        </p>
+        <form class="classform" id="classForm">
+          <label for="classInput">Create a verified citation</label>
+          <input type="text" id="classInput" placeholder="e.g. What caused the fall of the Roman Empire?" autocomplete="off">
+          <button type="submit" class="check-btn">Check &amp; get citation code</button>
+          <div id="classPosted"></div>
+        </form>
+        <form class="classform" id="joinForm">
+          <label for="joinInput">Have a code? Open the verified result</label>
+          <input type="text" id="joinInput" placeholder="e.g. XKP7" maxlength="4" autocomplete="off" style="text-transform: uppercase; letter-spacing: 0.2em;">
+          <button type="submit" class="check-btn">Open it</button>
+          <div id="joinError"></div>
+        </form>
+      </div>
+    </div>
+  </main>
+</div>
+
+<script>
+  const app = document.getElementById('app');
+  const form = document.getElementById('askForm');
+  const input = document.getElementById('askInput');
+  const threadInner = document.getElementById('threadInner');
+  const thread = document.getElementById('thread');
+  const hero = document.getElementById('hero');
+  const classview = document.getElementById('classview');
+  const dock = document.getElementById('dock');
+  const examples = document.getElementById('examples');
+  const historyList = document.getElementById('historyList');
+  const navCheck = document.getElementById('navCheck');
+  const navClass = document.getElementById('navClass');
+
+  const MODELS = [
+    { name: 'Claude', dot: 'claude' },
+    { name: 'ChatGPT', dot: 'chatgpt' },
+    { name: 'Gemini', dot: 'gemini' },
+  ];
+
+  let mode = 'ask'; // 'ask' | 'paste'
+  let deepOn = false;
+  const deepBtn = document.getElementById('deepBtn');
+  deepBtn.addEventListener('click', () => {
+    deepOn = !deepOn;
+    deepBtn.classList.toggle('on', deepOn);
+  });
+
+  /* ---------- Demo data for the three example questions ---------- */
+  const DEMOS = {
+    'what causes the seasons?': {
+      score: 96, word: 'High agreement',
+      bottom: 'The seasons are caused by the tilt of Earth’s axis (about 23.4°) — not by Earth’s distance from the Sun.',
+      answers: [
+        { model: 0, html: 'Seasons happen because <mark class="agree">Earth’s axis is tilted about 23.4 degrees</mark>. As Earth orbits the Sun, each hemisphere leans toward the Sun for part of the year (summer) and away for another part (winter).', badges: [['true','Axial tilt: true']] },
+        { model: 1, html: 'The main cause is <mark class="agree">the tilt of Earth’s rotational axis</mark>, which changes how directly sunlight strikes each hemisphere through the year. Distance from the Sun plays almost no role.', badges: [['true','Axial tilt: true']] },
+        { model: 2, html: '<mark class="agree">Earth’s axial tilt</mark> causes the seasons. A common misconception is that summer occurs when Earth is closest to the Sun — in fact, Earth is <em>farthest</em> from the Sun during Northern Hemisphere summer.', badges: [['true','Axial tilt: true'], ['true','Distance misconception: addressed']] },
+      ],
+      sources: [
+        ['NASA — What Causes the Seasons?', 'https://spaceplace.nasa.gov/seasons/en/'],
+        ['Britannica — Season', 'https://www.britannica.com/science/season'],
+      ],
+      delta: 2,
+      crosscheck: 'Each model reviewed the other two answers. <b>No corrections needed</b> — all three re-confirmed axial tilt, and Gemini’s note about the distance misconception was verified by Claude and ChatGPT. Re-verified answers are stronger evidence, so the agreement score rises.',
+    },
+    'is a tomato a fruit or a vegetable?': {
+      score: 78, word: 'Mostly agree',
+      bottom: 'Botanically, a tomato is a fruit. In cooking — and in U.S. law since 1893 — it is treated as a vegetable. Both are correct depending on context.',
+      answers: [
+        { model: 0, html: '<mark class="agree">Botanically, a tomato is a fruit</mark> — it develops from a flower and contains seeds. In everyday cooking it’s treated as a vegetable because of its savory use.', badges: [['true','Botanical fruit: true']] },
+        { model: 1, html: 'It’s both: <mark class="agree">a fruit by botanical definition</mark>, and a vegetable in the culinary sense. <mark class="conflict">The U.S. Supreme Court ruled it a vegetable in 1893</mark> (Nix v. Hedden) for tariff purposes.', badges: [['true','Botanical fruit: true'], ['disputed','Legal status: context-dependent']] },
+        { model: 2, html: '<mark class="agree">A fruit, botanically speaking</mark>. Nutritionists and chefs classify it as a vegetable. <mark class="conflict">Legally it is a vegetable in the United States</mark> — though that ruling only applied to import tariffs, not science.', badges: [['true','Botanical fruit: true'], ['disputed','Legal status: context-dependent']] },
+      ],
+      sources: [
+        ['Britannica — Is a Tomato a Fruit or a Vegetable?', 'https://www.britannica.com/story/is-a-tomato-a-fruit-or-a-vegetable'],
+        ['Oyez — Nix v. Hedden (1893)', 'https://www.oyez.org/cases/1850-1900/149us304'],
+      ],
+      delta: 7,
+      crosscheck: 'Each model reviewed the other two answers. <b>Conflict resolved</b> — all three accepted Gemini’s clarification that the 1893 ruling applied only to tariffs, not science. With that context agreed, the answers align more closely and the score rises.',
+    },
+    'who invented the telephone?': {
+      score: 64, word: 'Conflicting',
+      bottom: 'Alexander Graham Bell received the first telephone patent in 1876, but Antonio Meucci and Elisha Gray have competing claims — “who invented it” depends on whether you mean the patent, the first working device, or the first idea.',
+      answers: [
+        { model: 0, html: '<mark class="agree">Alexander Graham Bell patented the telephone in 1876</mark> and is traditionally credited as its inventor. <mark class="conflict">Elisha Gray filed a similar patent claim the very same day</mark>, which remains historically contested.', badges: [['true','Bell patent 1876: true'], ['disputed','Sole inventor: disputed']] },
+        { model: 1, html: 'Bell is credited with the invention, holding <mark class="agree">the first U.S. patent for the telephone (1876)</mark>. However, <mark class="conflict">Antonio Meucci demonstrated a voice-communication device years earlier</mark>, and in 2002 the U.S. House recognized his contribution.', badges: [['true','Bell patent 1876: true'], ['unverifiable','Meucci priority: unverifiable']] },
+        { model: 2, html: '<mark class="agree">Alexander Graham Bell</mark> is the standard answer. <mark class="conflict">Some historians argue Meucci or Gray deserve the credit</mark> — the truthful answer depends on how “invented” is defined.', badges: [['true','Bell patent 1876: true'], ['disputed','Credit: definition-dependent']] },
+      ],
+      sources: [
+        ['Library of Congress — Telephone Patent', 'https://www.loc.gov/collections/alexander-graham-bell-papers/'],
+        ['Britannica — Telephone', 'https://www.britannica.com/technology/telephone'],
+      ],
+      delta: -6,
+      crosscheck: 'Each model reviewed the other two answers. <b>The disagreement got deeper</b> — examining each other’s evidence, the models confirmed this is a genuine, unresolved historical dispute rather than a mistake by any one AI. Confidence in a single answer drops, so the score falls.',
+    },
+  };
+
+  /* ---------- History (localStorage) ---------- */
+  function loadHistory() {
+    try { return JSON.parse(localStorage.getItem('concur-history') || '[]'); }
+    catch { return []; }
+  }
+  function saveHistory(q) {
+    const h = loadHistory().filter(item => item !== q);
+    h.unshift(q);
+    localStorage.setItem('concur-history', JSON.stringify(h.slice(0, 8)));
+    renderHistory();
+  }
+  function renderHistory() {
+    const h = loadHistory();
+    historyList.innerHTML = '';
+    if (!h.length) {
+      const empty = document.createElement('p');
+      empty.className = 'history-empty';
+      empty.textContent = 'Your past checks will appear here.';
+      historyList.appendChild(empty);
+      return;
+    }
+    for (const q of h) {
+      const btn = document.createElement('button');
+      btn.type = 'button';
+      btn.textContent = q;
+      btn.title = q;
+      btn.addEventListener('click', () => runCheck(q, 'ask'));
+      historyList.appendChild(btn);
+    }
+  }
+
+  /* ---------- Toast + copy limit ---------- */
+  let toastTimer;
+  function showToast(msg) {
+    let t = document.getElementById('toast');
+    if (!t) {
+      t = document.createElement('div');
+      t.className = 'toast';
+      t.id = 'toast';
+      document.body.appendChild(t);
+    }
+    t.textContent = msg;
+    t.classList.add('show');
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => t.classList.remove('show'), 2800);
+  }
+
+  // Academic-integrity guard: copying out of Credify is capped at 500
+  // characters. Enough to quote — not enough to paste a whole AI answer
+  // into an essay. Credify is for checking, not copying.
+  const COPY_LIMIT = 500;
+  document.addEventListener('copy', (e) => {
+    const sel = String(window.getSelection());
+    if (sel.length > COPY_LIMIT) {
+      e.preventDefault();
+      e.clipboardData.setData('text/plain', sel.slice(0, COPY_LIMIT) + '…');
+      showToast('Copying is limited to ' + COPY_LIMIT + ' characters — Credify is for checking answers, not copying them.');
+    }
+  });
+
+  /* ---------- Views ---------- */
+  function showView(name) {
+    hero.classList.toggle('on', name === 'hero');
+    thread.classList.toggle('on', name === 'thread');
+    classview.classList.toggle('on', name === 'class');
+    app.classList.toggle('chatting', name === 'thread');
+    navCheck.classList.toggle('active', name !== 'class');
+    navClass.classList.toggle('active', name === 'class');
+  }
+  navCheck.addEventListener('click', () => {
+    // "New check" always returns to the first page, ask card back in place
+    if (form.parentElement === dock) {
+      hero.insertBefore(form, hero.querySelector('.desc'));
+      input.rows = 2;
+    }
+    showView('hero');
+    input.focus();
+  });
+  navClass.addEventListener('click', () => showView('class'));
+
+  /* ---------- Mode tabs (both copies of the form share one form node) ---------- */
+  form.querySelector('.mode-tabs').addEventListener('click', (e) => {
+    const btn = e.target.closest('button[data-mode]');
+    if (!btn) return;
+    mode = btn.dataset.mode;
+    for (const b of form.querySelectorAll('.mode-tabs button')) {
+      b.classList.toggle('on', b.dataset.mode === mode);
+    }
+    input.placeholder = mode === 'ask'
+      ? 'Ask anything — Credify puts it to every AI at once…'
+      : mode === 'link'
+        ? 'Paste a link — Credify reads the page and fact-checks its claims…'
+        : 'Paste an answer, a paragraph, or an essay to fact-check…';
+    input.focus();
+  });
+
+  examples.addEventListener('click', (e) => {
+    const btn = e.target.closest('button');
+    if (!btn) return;
+    input.value = btn.textContent;
+    input.focus();
+  });
+
+  input.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); form.requestSubmit(); }
+  });
+
+  form.addEventListener('submit', (e) => {
+    e.preventDefault();
+    let q = input.value.trim();
+    if (!q) return;
+    if (mode === 'link') {
+      if (!/^https?:\/\//i.test(q)) q = 'https://' + q;
+      let ok = false;
+      try { ok = new URL(q).hostname.includes('.'); } catch {}
+      if (!ok) { showToast('That doesn’t look like a link — paste a full web address.'); return; }
+    }
+    input.value = '';
+    runCheck(q, mode);
+  });
+
+  /* ---------- Build one check ---------- */
+  function el(tag, cls, text) {
+    const n = document.createElement(tag);
+    if (cls) n.className = cls;
+    if (text != null) n.textContent = text;
+    return n;
+  }
+
+  function scoreColor(score) {
+    if (score >= 85) return 'var(--good)';
+    if (score >= 70) return 'var(--warn)';
+    return 'var(--bad)';
+  }
+  function scoreWord(score) {
+    if (score >= 85) return 'High agreement';
+    if (score >= 70) return 'Mostly agree';
+    return 'Conflicting';
+  }
+
+  function runCheck(q, checkMode, preset, classCode) {
+    const demo = (!preset && checkMode === 'ask') ? DEMOS[q.toLowerCase()] : null;
+    const usedDeep = preset ? !!preset.deep : deepOn;
+    const check = el('section', 'check');
+
+    if (classCode) check.appendChild(el('span', 'check-chip', 'Class question · ' + classCode));
+    if (usedDeep && !demo) check.appendChild(el('span', 'check-chip', '🧠 Deep check'));
+
+    // Question / pasted text heading
+    const asked = el('h2', 'asked', checkMode === 'paste' ? 'Fact-check: “' + (q.length > 90 ? q.slice(0, 90) + '…' : q) + '”' : q);
+    check.appendChild(asked);
+
+    // 1. Agreement score
+    const bar = el('div', 'scorebar');
+    bar.appendChild(el('span', 'score-label', 'Agreement'));
+    const meter = el('div', 'meter');
+    const fill = el('i');
+    meter.appendChild(fill);
+    bar.appendChild(meter);
+    let num = null, word = null;
+    if (demo) {
+      fill.style.width = demo.score + '%';
+      fill.style.background = scoreColor(demo.score);
+      num = el('span', 'score-num', demo.score + '%');
+      num.style.color = scoreColor(demo.score);
+      bar.appendChild(num);
+      word = el('span', 'score-word', demo.word);
+      word.style.color = scoreColor(demo.score);
+      bar.appendChild(word);
+    } else {
+      fill.style.width = '0%';
+      word = el('span', 'score-word', 'Scored once the models are connected');
+      bar.appendChild(word);
+    }
+    check.appendChild(bar);
+
+    // Live state + score helpers (shared by first scoring and cross-check)
+    const live = { answers: null, score: null };
+    function applyScore(s, wordText) {
+      s = Math.max(0, Math.min(100, s));
+      const color = scoreColor(s);
+      fill.style.width = s + '%';
+      fill.style.background = color;
+      if (!num) { num = el('span', 'score-num', ''); bar.insertBefore(num, word); }
+      num.textContent = s + '%';
+      num.style.color = color;
+      word.textContent = wordText || scoreWord(s);
+      word.style.color = color;
+    }
+    function addDeltaChip(delta) {
+      if (delta === 0) return;
+      bar.appendChild(el('span',
+        'score-delta ' + (delta >= 0 ? 'up' : 'down'),
+        (delta >= 0 ? '▲ +' + delta : '▼ ' + delta) + ' after cross-check'));
+    }
+
+    // 3. Bottom line
+    const bottom = el('div', 'bottomline');
+    bottom.appendChild(el('div', 'who', 'Bottom line'));
+    const bottomP = el('p', null, demo ? demo.bottom
+      : checkMode === 'paste'
+        ? 'Credify will break this text into claims and mark each one True, Disputed, or Unverifiable — once the AI models are connected.'
+        : 'A plain-language answer you can trust will appear here once the AI models are connected.');
+    bottom.appendChild(bottomP);
+    check.appendChild(bottom);
+
+    // 2 & 6. Answers with conflict highlighting + claim badges
+    const answers = el('div', 'answers');
+    MODELS.forEach((model, i) => {
+      const row = el('div', 'answer');
+      const who = el('div', 'who');
+      const dot = el('span', 'dot ' + model.dot);
+      who.append(dot, el('span', null, model.name));
+      row.appendChild(who);
+
+      const body = el('div');
+      if (demo) {
+        const what = el('p', 'what');
+        what.innerHTML = demo.answers[i].html;
+        body.appendChild(what);
+        const badges = el('div', 'badges');
+        for (const [type, label] of demo.answers[i].badges) {
+          badges.appendChild(el('span', 'badge ' + type, label));
+        }
+        body.appendChild(badges);
+      } else {
+        body.appendChild(el('p', 'what pending',
+          checkMode === 'paste'
+            ? model.name + '’s verdict on this text will appear here once its API is connected.'
+            : model.name + '’s answer will appear here once its API is connected.'));
+      }
+      row.appendChild(body);
+      answers.appendChild(row);
+    });
+    check.appendChild(answers);
+
+    // 4. Sources
+    const sources = el('div', 'sources');
+    sources.appendChild(el('span', 'who', 'Sources'));
+    if (demo) {
+      for (const [label, url] of demo.sources) {
+        const a = document.createElement('a');
+        a.href = url; a.target = '_blank'; a.rel = 'noopener';
+        a.textContent = label;
+        sources.appendChild(a);
+      }
+    } else {
+      sources.appendChild(el('span', null, 'Reliable sources supporting the consensus will be linked here.'));
+    }
+    check.appendChild(sources);
+
+    // Fill the sources row with real, server-verified links
+    function fillSources(list) {
+      if (!list || !list.length) return;
+      sources.innerHTML = '';
+      sources.appendChild(el('span', 'who', 'Sources'));
+      for (const s of list) {
+        const a = document.createElement('a');
+        a.href = s.url; a.target = '_blank'; a.rel = 'noopener';
+        a.textContent = s.title;
+        sources.appendChild(a);
+      }
+    }
+
+    // 5 & 9. Actions: cross-check + share
+    const actions = el('div', 'actions');
+    const crossBtn = el('button', null, '↺ Have the models check each other');
+    crossBtn.type = 'button';
+    crossBtn.addEventListener('click', () => {
+      crossBtn.disabled = true;
+      crossBtn.style.opacity = '0.6';
+      const note = el('div', 'crosscheck-note');
+      check.insertBefore(note, actions);
+
+      // Demo examples: scripted movement (up OR down)
+      if (demo) {
+        note.innerHTML = '<b>Cross-check:</b> ' + demo.crosscheck;
+        if (typeof demo.delta === 'number' && num) {
+          applyScore(demo.score + demo.delta);
+          addDeltaChip(demo.delta);
+        }
+        return;
+      }
+
+      // Live checks: models genuinely review each other, then re-score.
+      if (!live.answers) {
+        note.innerHTML = '<b>Cross-check:</b> needs answers from two connected models — wait for the check above to finish, or connect a second model.';
+        return;
+      }
+      note.innerHTML = '<b>Cross-check:</b> the models are reviewing each other’s answers…';
+      fetch('/api/crosscheck', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ question: q, mode: checkMode, answers: live.answers, deep: usedDeep }),
+      })
+        .then((r) => (r.ok ? r.json() : Promise.reject(new Error('bad response'))))
+        .then((data) => {
+          if (data.error) { note.innerHTML = '<b>Cross-check:</b> ' + data.error; return; }
+          const rows = check.querySelectorAll('.answer .what');
+          if (data.claude) rows[0].textContent = data.claude;
+          if (data.chatgpt) rows[1].textContent = data.chatgpt;
+          if (data.agreement && typeof data.agreement.score === 'number') {
+            const old = live.score;
+            applyScore(data.agreement.score, data.agreement.word);
+            if (typeof old === 'number') addDeltaChip(data.agreement.score - old);
+            live.score = data.agreement.score;
+            if (data.agreement.bottom) bottomP.textContent = data.agreement.bottom;
+          }
+          if (data.chatgpt && data.claude) {
+            live.answers = { chatgpt: data.chatgpt, claude: data.claude };
+          }
+          note.innerHTML = '<b>Cross-check:</b> ' + (data.note ||
+            'each model reviewed the other’s answer and gave its final version above.');
+        })
+        .catch(() => {
+          note.innerHTML = '<b>Cross-check:</b> couldn’t reach the server — is server.py running?';
+        });
+    });
+    const shareBtn = el('button', null, '🔗 Share this check');
+    shareBtn.type = 'button';
+    shareBtn.addEventListener('click', async () => {
+      const text = demo
+        ? 'Credify check: “' + q + '”\nAgreement: ' + demo.score + '% (' + demo.word + ')\nBottom line: ' + demo.bottom
+        : 'Credify check: “' + q + '” (demo — models not yet connected)';
+      try {
+        await navigator.clipboard.writeText(text);
+        shareBtn.textContent = '✓ Copied to clipboard';
+      } catch {
+        shareBtn.textContent = 'Copy not available here';
+      }
+      setTimeout(() => { shareBtn.textContent = '🔗 Share this check'; }, 2200);
+    });
+    actions.append(crossBtn, shareBtn);
+    check.appendChild(actions);
+
+    threadInner.appendChild(check);
+    showView('thread');
+    thread.scrollTop = thread.scrollHeight;
+
+    // Live mode: for non-demo checks, ask the backend (server.py) for real
+    // answers. Falls back silently to the placeholders if no backend exists
+    // (e.g. when index.html is opened as a plain file).
+    // Stored class-code results: fill directly, no new AI calls
+    if (preset) {
+      const whats = check.querySelectorAll('.answer .what');
+      if (preset.claude) { whats[0].textContent = preset.claude; whats[0].classList.remove('pending'); }
+      if (preset.chatgpt) { whats[1].textContent = preset.chatgpt; whats[1].classList.remove('pending'); }
+      if (preset.agreement && typeof preset.agreement.score === 'number') {
+        applyScore(preset.agreement.score, preset.agreement.word);
+        live.score = preset.agreement.score;
+        if (preset.agreement.bottom) bottomP.textContent = preset.agreement.bottom;
+      }
+      if (preset.chatgpt && preset.claude) {
+        live.answers = { chatgpt: preset.chatgpt, claude: preset.claude };
+      }
+      fillSources(preset.sources);
+    } else if (!demo) {
+      const whats = check.querySelectorAll('.answer .what');
+      // rows follow MODELS order: Claude, ChatGPT, Gemini
+      const claudeEl = whats[0], gptEl = whats[1];
+      const claudeFallback = claudeEl.textContent;
+      const gptFallback = gptEl.textContent;
+      claudeEl.textContent = 'Claude is thinking…';
+      gptEl.textContent = 'ChatGPT is thinking…';
+      fetch('/api/check', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ question: q, mode: checkMode, deep: usedDeep }),
+      })
+        .then((r) => (r.ok ? r.json() : Promise.reject(new Error('bad response'))))
+        .then((data) => {
+          if (data.chatgpt) {
+            gptEl.textContent = data.chatgpt;
+            gptEl.classList.remove('pending');
+          } else {
+            gptEl.textContent = data.chatgpt_error || data.error || gptFallback;
+          }
+          if (data.claude) {
+            claudeEl.textContent = data.claude;
+            claudeEl.classList.remove('pending');
+          } else {
+            claudeEl.textContent = data.claude_error || claudeFallback;
+          }
+          // Real agreement score + bottom line (needs 2+ connected models)
+          if (data.agreement && typeof data.agreement.score === 'number') {
+            applyScore(data.agreement.score, data.agreement.word);
+            live.score = data.agreement.score;
+            if (data.agreement.bottom) bottomP.textContent = data.agreement.bottom;
+          }
+          if (data.chatgpt && data.claude) {
+            live.answers = { chatgpt: data.chatgpt, claude: data.claude };
+          }
+          fillSources(data.sources);
+        })
+        .catch(() => {
+          const unreachable = 'Couldn’t reach the Credify server — check your connection and try again.';
+          gptEl.textContent = unreachable;
+          claudeEl.textContent = unreachable;
+        });
+    }
+
+    // First check: move the chat card into the dock
+    if (form.parentElement !== dock) {
+      dock.prepend(form);
+      input.rows = 1;
+    }
+    if (checkMode === 'ask') saveHistory(q);
+    input.focus();
+  }
+
+  /* ---------- Class mode ---------- */
+  document.getElementById('classForm').addEventListener('submit', (e) => {
+    e.preventDefault();
+    const ci = document.getElementById('classInput');
+    const q = ci.value.trim();
+    if (!q) return;
+    const posted = document.getElementById('classPosted');
+    posted.innerHTML = '';
+    const box = el('div', 'posted');
+    box.textContent = 'Checking with the models and creating the class code…';
+    posted.appendChild(box);
+    fetch('/api/class/post', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ question: q, deep: deepOn }),
+    })
+      .then((r) => (r.ok ? r.json() : Promise.reject(new Error('bad response'))))
+      .then((data) => {
+        if (data.error) { box.textContent = data.error; return; }
+        ci.value = '';
+        box.innerHTML = '';
+        box.appendChild(el('div', null, 'Verified! Your citation code:'));
+        box.appendChild(el('div', 'classcode', data.code));
+        box.appendChild(el('div', null, '“' + data.question + '” — put the code in your work; anyone who enters it sees the same cross-checked result you did.'));
+      })
+      .catch(() => { box.textContent = 'Couldn’t reach the server — is server.py running?'; });
+  });
+
+  document.getElementById('joinForm').addEventListener('submit', (e) => {
+    e.preventDefault();
+    const ji = document.getElementById('joinInput');
+    const code = ji.value.trim().toUpperCase();
+    if (!code) return;
+    const errBox = document.getElementById('joinError');
+    errBox.innerHTML = '';
+    fetch('/api/class/get?code=' + encodeURIComponent(code))
+      .then((r) => (r.ok ? r.json() : Promise.reject(new Error('bad response'))))
+      .then((data) => {
+        if (data.error) {
+          errBox.appendChild(el('div', 'posted', data.error));
+          return;
+        }
+        ji.value = '';
+        runCheck(data.question, data.mode || 'ask', data.result, code);
+      })
+      .catch(() => {
+        errBox.appendChild(el('div', 'posted', 'Couldn’t reach the server — is server.py running?'));
+      });
+  });
+
+  renderHistory();
+</script>
+<script>
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('./sw.js').catch(() => {});
+  }
+</script>
+
+
+<span id="PING_IFRAME_FORM_DETECTION" style="display: none;"></span></body></html>
