@@ -421,6 +421,7 @@
       const whats = check.querySelectorAll('.answer .what');
       if (preset.claude) { whats[0].textContent = preset.claude; whats[0].classList.remove('pending'); }
       if (preset.chatgpt) { whats[1].textContent = preset.chatgpt; whats[1].classList.remove('pending'); }
+      if (preset.gemini) { whats[2].textContent = preset.gemini; whats[2].classList.remove('pending'); }
       if (preset.agreement && typeof preset.agreement.score === 'number') {
         applyScore(preset.agreement.score, preset.agreement.word);
         live.score = preset.agreement.score;
@@ -433,11 +434,13 @@
     } else if (!demo) {
       const whats = check.querySelectorAll('.answer .what');
       // rows follow MODELS order: Claude, ChatGPT, Gemini
-      const claudeEl = whats[0], gptEl = whats[1];
+      const claudeEl = whats[0], gptEl = whats[1], geminiEl = whats[2];
       const claudeFallback = claudeEl.textContent;
       const gptFallback = gptEl.textContent;
+      const geminiFallback = geminiEl.textContent;
       claudeEl.textContent = 'Claude is thinking…';
       gptEl.textContent = 'ChatGPT is thinking…';
+      geminiEl.textContent = 'Gemini is thinking…';
       fetch('/api/check', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -457,6 +460,12 @@
           } else {
             claudeEl.textContent = data.claude_error || claudeFallback;
           }
+          if (data.gemini) {
+            geminiEl.textContent = data.gemini;
+            geminiEl.classList.remove('pending');
+          } else {
+            geminiEl.textContent = data.gemini_error || data.error || geminiFallback;
+          }
           // Real agreement score + bottom line (needs 2+ connected models)
           if (data.agreement && typeof data.agreement.score === 'number') {
             applyScore(data.agreement.score, data.agreement.word);
@@ -472,6 +481,7 @@
           const unreachable = 'Couldn’t reach the Credify server — check your connection and try again.';
           gptEl.textContent = unreachable;
           claudeEl.textContent = unreachable;
+          geminiEl.textContent = unreachable;
         });
     }
 
