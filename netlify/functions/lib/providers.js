@@ -25,10 +25,10 @@ const ANTHROPIC_API_KEY = process.env.ANTHROPIC_API_KEY || "";
 const GEMINI_API_KEY = process.env.GEMINI_API_KEY || "";
 
 const GROQ_MODEL = "openai/gpt-oss-120b"; // only free model in play, used for both normal and deep checks
-// The whole claude-3-5-* generation (including its "-latest" aliases) has
-// been retired — claude-haiku-4-5 / claude-sonnet-5 are the current aliases.
-const CLAUDE_MODEL = "claude-haiku-4-5";
-const CLAUDE_MODEL_DEEP = "claude-sonnet-5";
+// Sonnet 5 by default (better reasoning for a research/fact-checking tool
+// than the speed-optimized Haiku tier), Opus 4.8 on the "🧠 Deep" toggle.
+const CLAUDE_MODEL = "claude-sonnet-5";
+const CLAUDE_MODEL_DEEP = "claude-opus-4-8";
 // gemini-1.5-* were shut down, and pinned gemini-2.5-flash/pro turned out
 // unavailable to newer API keys too — use Google's official self-updating
 // aliases instead so this doesn't go stale again as models get retired.
